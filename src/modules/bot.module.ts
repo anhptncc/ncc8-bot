@@ -1,5 +1,6 @@
 import { HelpCommand } from '@app/command/help.command';
 import { PingCommand } from '@app/command/ping.command';
+import { RemindCommand } from '@app/command/remind.command';
 import { ClientConfigService } from '@app/config/client.config';
 import { BotGateway } from '@app/gateway/bot.gateway';
 import { EventListenerChannelMessage } from '@app/listeners';
@@ -35,6 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     // Commands
     HelpCommand,
     PingCommand,
+    RemindCommand,
   ],
   controllers: [],
 })
