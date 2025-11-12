@@ -14,4 +14,7 @@ export default () => ({
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || '',
   POSTGRES_DB: process.env.POSTGRES_DB || '',
   MEZON_TOKEN: process.env.MEZON_TOKEN || '',
+  BOT_ID: process.env.BOT_ID || '',
+  NCC8_CHANNEL_ID: process.env.NCC8_CHANNEL_ID || '',
+  GOOGLE_SERVICE_ACCOUNT_JSON: process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '',
 });
