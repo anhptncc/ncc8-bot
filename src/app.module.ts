@@ -23,6 +23,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         BOT_ID: Joi.string().required(),
         NCC8_CHANNEL_ID: Joi.string().required(),
         GOOGLE_SERVICE_ACCOUNT_JSON: Joi.string().required(),
+        CONFESSION_CHANNEL_ID: Joi.string().required(),
       }),
       isGlobal: true,
       envFilePath: envFilePath,

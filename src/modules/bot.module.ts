@@ -1,3 +1,4 @@
+import { ConfessionCommand } from '@app/command/confession.command';
 import { HelpCommand } from '@app/command/help.command';
 import { PingCommand } from '@app/command/ping.command';
 import { ClientConfigService } from '@app/config/client.config';
@@ -35,6 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     // Commands
     HelpCommand,
     PingCommand,
+    ConfessionCommand,
   ],
   controllers: [],
 })
