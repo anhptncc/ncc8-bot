@@ -1532,9 +1532,9 @@
     undici-types "~6.21.0"
 
 "@types/node@>=13.7.0":
-  version "24.9.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.9.1.tgz#b7360b3c789089e57e192695a855aa4f6981a53c"
-  integrity sha512-QoiaXANRkSXK6p0Duvt56W208du4P9Uye9hWLWgGMDTEoKPhuenzNcC4vGUmrNkiOKTlIrBoyNQYNpSwfEZXSg==
+  version "24.10.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.10.1.tgz#91e92182c93db8bd6224fca031e2370cef9a8f01"
+  integrity sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==
   dependencies:
     undici-types "~7.16.0"
 
@@ -6054,10 +6054,10 @@ methods@^1.1.2, methods@~1.1.2:
   resolved "https://registry.npmjs.org/methods/-/methods-1.1.2.tgz"
   integrity sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==
 
-mezon-sdk@^2.8.23:
-  version "2.8.23"
-  resolved "https://registry.yarnpkg.com/mezon-sdk/-/mezon-sdk-2.8.23.tgz#74c7e023d57712081d29bced3979993e45cd7ea2"
-  integrity sha512-q9oEjZfh1/xyYndt9u0rZwDYQB/oAZ1xvOOliU1BfcG0CzoC235mrP20/q90GMoWHXVZbjevgkWTV2AKOW4+cg==
+mezon-sdk@^2.8.25:
+  version "2.8.25"
+  resolved "https://registry.yarnpkg.com/mezon-sdk/-/mezon-sdk-2.8.25.tgz#f0070132e80948a3e26090b04ab217cb0fe77145"
+  integrity sha512-DBS2e1TnUc5pbMyWGn+ON2gzWBYr/BnOksdplENyBa+IXrFs1SUpJL+ssLiP4W+7+p/bz7NJBjGVMJJyKVgCjQ==
   dependencies:
     "@types/ws" "^8.5.12"
     base64-arraybuffer "^1.0.2"
@@ -6128,9 +6128,9 @@ mimic-response@^3.1.0:
   integrity sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==
 
 minimatch@*:
-  version "10.0.3"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-10.0.3.tgz#cf7a0314a16c4d9ab73a7730a0e8e3c3502d47aa"
-  integrity sha512-IPZ167aShDZZUMdRk66cyQAW3qr0WzbHkPdMYa8bzZhlHhO3jALbKdxcaak7W9FfT2rZNpQuUu4Od7ILEpXSaw==
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-10.1.1.tgz#e6e61b9b0c1dcab116b5a7d1458e8b6ae9e73a55"
+  integrity sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==
   dependencies:
     "@isaacs/brace-expansion" "^5.0.0"
 
@@ -6186,9 +6186,9 @@ mkdirp@^0.5.6:
     minimist "^1.2.6"
 
 mmn-client-js@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/mmn-client-js/-/mmn-client-js-1.0.10.tgz#3abd0cfa5903919c54f76a91f9ae7227c4cc05db"
-  integrity sha512-KH99I6KwKpi7otvfcV/tb4JTgNtPf0eWbKQ94VuvFBD5rI/kj0426GR6uXw0MaQgV5m7IcA8HNo210ODfVOSKQ==
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/mmn-client-js/-/mmn-client-js-1.0.11.tgz#7a1dadd1e306ac26d0b98a10f42d6d5b15bcd4bb"
+  integrity sha512-B5xmrUEBukq6JcCu5T/I+8DUJcdWGW5j+GmVwB4L73laRAlJVXu8ONmKvwGJrypwmFVEmG4/eQSz7MAzXGM+Ww==
   dependencies:
     bip39 "^3.1.0"
     bs58 "^5.0.0"
@@ -6271,9 +6271,9 @@ nice-try@^1.0.4:
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
 node-abi@^3.3.0:
-  version "3.78.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.78.0.tgz#fd0ecbd0aa89857b98da06bd3909194abb0821ba"
-  integrity sha512-E2wEyrgX/CqvicaQYU3Ze1PFGjc4QYPGsjUrlYkqAE0WjHEZwgOsGMPMzkMse4LjJbDmaEuDX3CM036j5K2DSQ==
+  version "3.80.0"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.80.0.tgz#d7390951f27caa129cceeec01e1c20fc9f07581c"
+  integrity sha512-LyPuZJcI9HVwzXK1GPxWNzrr+vr8Hp/3UqlmWxxh8p54U1ZbclOqbSog9lWHaCX+dBaiGi6n/hIX+mKu74GmPA==
   dependencies:
     semver "^7.3.5"
 

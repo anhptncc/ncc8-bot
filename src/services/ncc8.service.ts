@@ -16,7 +16,7 @@ dayjs.extend(customParseFormat);
 export class Ncc8Service {
   private client: MezonClient;
   private ncc8Channel: TextChannel;
-  private readonly NCC8_CHANNEL_ID = '1833424494203506688';
+  private readonly NCC8_CHANNEL_ID = process.env.NCC8_CHANNEL_ID;
 
   constructor(
     private clientService: MezonClientService,
@@ -27,7 +27,11 @@ export class Ncc8Service {
   }
 
   private async initializeChannel() {
-    this.ncc8Channel = await this.client.channels.fetch(this.NCC8_CHANNEL_ID);
+    try {
+      this.ncc8Channel = await this.client.channels.fetch(this.NCC8_CHANNEL_ID);
+    } catch (error) {
+      console.error('Error fetching NCC8 channel:', error);
+    }
   }
 
   async sendWorkSchedule() {
