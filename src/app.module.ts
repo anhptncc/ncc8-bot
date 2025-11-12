@@ -8,6 +8,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedisModule } from './modules/redis.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       imports: [ConfigModule],
     }),
     BotModule,
+    RedisModule,
   ],
   controllers: [HealthController],
 })

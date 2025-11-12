@@ -27,7 +27,11 @@ export class Ncc8Service {
   }
 
   private async initializeChannel() {
-    this.ncc8Channel = await this.client.channels.fetch(this.NCC8_CHANNEL_ID);
+    try {
+      this.ncc8Channel = await this.client.channels.fetch(this.NCC8_CHANNEL_ID);
+    } catch (error) {
+      console.error('Error fetching NCC8 channel:', error);
+    }
   }
 
   async sendWorkSchedule() {
@@ -70,5 +74,26 @@ export class Ncc8Service {
     ];
 
     return this.ncc8Channel.send(content, mentions, [], true);
+  }
+
+  async remindUsersSendOpenTalkRecording() {
+    try {
+      // Get user from DM clan (clan "0")
+      let clan = this.client.clans.get('1840684476926005248');
+
+      if (!clan) {
+        throw new Error('DM clan not available');
+      }
+
+      clan = await this.client.clans.fetch('1840684476926005248');
+      console.log(
+        '🚀 ~ Ncc8Service ~ remindUsersSendOpenTalkRecording ~ clan:',
+        clan.users.cache,
+      );
+
+      // const user = await dmClan.users.fetch(recipientUserId);
+    } catch (error) {
+      throw error;
+    }
   }
 }

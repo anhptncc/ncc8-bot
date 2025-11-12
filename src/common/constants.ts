@@ -31,3 +31,7 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   CLIENT_AUTHENTICATED: 'authenticated',
 } as const;
+
+export enum REDIS_KEYS {
+  OPEN_TALK = 'open_talk',
+}
