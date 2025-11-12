@@ -14,7 +14,10 @@ export class HelpCommand extends CommandMessage {
   }
 
   execute(args: string[], message: ChannelMessage) {
-    const messageContent = `**Available Commands:**\n` + `Coming soon\n` + ``;
+    const messageContent =
+      `**Available Commands:**\n` +
+      `*confession: Gửi confession đến NCC8 (ẩn danh)\n` +
+      ``;
 
     return this.replyMessageGenerate(
       {

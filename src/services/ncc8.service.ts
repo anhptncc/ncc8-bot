@@ -3,6 +3,7 @@ import { MezonClientService } from './mezon-client.service';
 import {
   ApiMessageMention,
   ChannelMessageContent,
+  EMarkdownType,
   MezonClient,
 } from 'mezon-sdk';
 import { GoogleSheetsService } from './google-sheets.service';
@@ -17,6 +18,7 @@ export class Ncc8Service {
   private client: MezonClient;
   private ncc8Channel: TextChannel;
   private readonly NCC8_CHANNEL_ID = process.env.NCC8_CHANNEL_ID;
+  private readonly CONFESSION_CHANNEL_ID = process.env.CONFESSION_CHANNEL_ID;
 
   constructor(
     private clientService: MezonClientService,
@@ -74,5 +76,27 @@ export class Ncc8Service {
     ];
 
     return this.ncc8Channel.send(content, mentions, [], true);
+  }
+
+  async sendConfession(args: string[]) {
+    const msg = args.join(' ');
+
+    const messageContent =
+      `💌 New Confession:\n${msg}` +
+      '\n------------------THE END-----------------\n';
+
+    const content: ChannelMessageContent = {
+      mk: [{ type: EMarkdownType.PRE, s: 0, e: messageContent.length }],
+      t: messageContent,
+    };
+
+    return this.ncc8Channel.send(
+      content,
+      [],
+      [],
+      false,
+      false,
+      this.CONFESSION_CHANNEL_ID,
+    );
   }
 }
