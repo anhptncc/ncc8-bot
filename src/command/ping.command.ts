@@ -2,7 +2,7 @@ import { ChannelMessage } from 'mezon-sdk';
 import { Command } from '@app/decorators/command.decorator';
 import { CommandMessage } from '@app/command/common/command.abstract';
 
-@Command('ping', {
+@Command('ncc8ping', {
   description: 'Check bot latency and responsiveness',
   usage: '!ping',
   category: 'Utility',

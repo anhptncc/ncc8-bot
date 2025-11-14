@@ -2,7 +2,7 @@ import { ChannelMessage } from 'mezon-sdk';
 import { Command } from '@app/decorators/command.decorator';
 import { CommandMessage } from '@app/command/common/command.abstract';
 
-@Command('help', {
+@Command('ncc8help', {
   description: 'Shows available commands and their usage',
   usage: '!help [command]',
   category: 'General',
