@@ -1626,9 +1626,9 @@
   integrity sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==
 
 "@types/yargs@^15.0.0":
-  version "15.0.19"
-  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-15.0.19.tgz#328fb89e46109ecbdb70c295d96ff2f46dfd01b9"
-  integrity sha512-2XUaGVmyQjgyAZldf0D0c14vvo/yv0MhQBSTJcejMMaitsn3nxCB6TmH4G0ZQf+uxROOa9mpanoSm8h6SG/1ZA==
+  version "15.0.20"
+  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-15.0.20.tgz#6d00a124c9f757427d4ca3cbc87daea778053c68"
+  integrity sha512-KIkX+/GgfFitlASYCGoSF+T4XRXhOubJLhkLVtSfsRTe9jWMmuM2g28zQ41BtPTG7TRBb2xHW+LCNVE9QR/vsg==
   dependencies:
     "@types/yargs-parser" "*"
 
@@ -6054,10 +6054,10 @@ methods@^1.1.2, methods@~1.1.2:
   resolved "https://registry.npmjs.org/methods/-/methods-1.1.2.tgz"
   integrity sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==
 
-mezon-sdk@^2.8.25:
-  version "2.8.25"
-  resolved "https://registry.yarnpkg.com/mezon-sdk/-/mezon-sdk-2.8.25.tgz#f0070132e80948a3e26090b04ab217cb0fe77145"
-  integrity sha512-DBS2e1TnUc5pbMyWGn+ON2gzWBYr/BnOksdplENyBa+IXrFs1SUpJL+ssLiP4W+7+p/bz7NJBjGVMJJyKVgCjQ==
+mezon-sdk@^2.8.27:
+  version "2.8.27"
+  resolved "https://registry.yarnpkg.com/mezon-sdk/-/mezon-sdk-2.8.27.tgz#1e571475daf63f509f70b14b4989eee7051365b3"
+  integrity sha512-ruUHvzYNaysBPjLDSlkgB/U+nDctklbsk079RkwDuTDQee5hU3A+3dP/dPaVkUbARU1QXHnmI2N0TWuFu8fVuQ==
   dependencies:
     "@types/ws" "^8.5.12"
     base64-arraybuffer "^1.0.2"
@@ -6186,9 +6186,9 @@ mkdirp@^0.5.6:
     minimist "^1.2.6"
 
 mmn-client-js@^1.0.10:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/mmn-client-js/-/mmn-client-js-1.0.11.tgz#7a1dadd1e306ac26d0b98a10f42d6d5b15bcd4bb"
-  integrity sha512-B5xmrUEBukq6JcCu5T/I+8DUJcdWGW5j+GmVwB4L73laRAlJVXu8ONmKvwGJrypwmFVEmG4/eQSz7MAzXGM+Ww==
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/mmn-client-js/-/mmn-client-js-1.0.13.tgz#cb91444a37b8c97678948fbb5ab1b844d58b91e4"
+  integrity sha512-ZrJsOzKI1yZijLCzp+wMKwdpocilYIpIPLKs2IF+KWLmfQ0paHvgxS789w+qnuH9Aq6zPJJorH7Cw7AMSxxgMw==
   dependencies:
     bip39 "^3.1.0"
     bs58 "^5.0.0"
@@ -6271,9 +6271,9 @@ nice-try@^1.0.4:
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
 node-abi@^3.3.0:
-  version "3.80.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.80.0.tgz#d7390951f27caa129cceeec01e1c20fc9f07581c"
-  integrity sha512-LyPuZJcI9HVwzXK1GPxWNzrr+vr8Hp/3UqlmWxxh8p54U1ZbclOqbSog9lWHaCX+dBaiGi6n/hIX+mKu74GmPA==
+  version "3.85.0"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.85.0.tgz#b115d575e52b2495ef08372b058e13d202875a7d"
+  integrity sha512-zsFhmbkAzwhTft6nd3VxcG0cvJsT70rL+BIGHWVq5fi6MwGrHwzqKaxXE+Hl2GmnGItnDKPPkO5/LQqjVkIdFg==
   dependencies:
     semver "^7.3.5"
 
