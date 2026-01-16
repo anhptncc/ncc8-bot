@@ -18,8 +18,10 @@ export class Ncc8Service {
   private readonly logger = new Logger(Ncc8Service.name);
   private client: MezonClient;
   private ncc8Channel: TextChannel;
+  private ncc8AudioChannel: TextChannel;
   private readonly NCC8_CHANNEL_ID = process.env.NCC8_CHANNEL_ID;
   private readonly CONFESSION_CHANNEL_ID = process.env.CONFESSION_CHANNEL_ID;
+  private readonly NCC8_AUDIO_CHANNEL_ID = process.env.NCC8_AUDIO_CHANNEL_ID;
 
   constructor(
     private clientService: MezonClientService,
@@ -29,12 +31,28 @@ export class Ncc8Service {
     this.initializeChannel();
   }
 
+  ncc8Log(error: unknown, customMsg: string = 'NCC8 service error:') {
+    console.error(customMsg, error);
+    this.logger.error(customMsg, error);
+    this.clientService.sendMessageToUser({
+      // send to developer
+      userId: '1803263641638670336',
+      textContent: JSON.stringify({
+        error: customMsg,
+        details: error instanceof Error ? error.message : String(error),
+      }),
+    });
+  }
+
   private async initializeChannel() {
     try {
       this.ncc8Channel = await this.client.channels.fetch(this.NCC8_CHANNEL_ID);
+      this.ncc8AudioChannel = await this.client.channels.fetch(
+        this.NCC8_AUDIO_CHANNEL_ID,
+      );
+      console.log('NCC8 channel initialized successfully.');
     } catch (error) {
-      console.error('Error fetching NCC8 channel:', error);
-      this.logger.error('Error fetching NCC8 channel:', error);
+      this.ncc8Log(error);
     }
   }
 
@@ -80,7 +98,7 @@ export class Ncc8Service {
 
       return this.ncc8Channel.send(content, mentions, [], true);
     } catch (error) {
-      this.logger.error('Error sending work schedule:', error);
+      this.ncc8Log(error, 'Error sending work schedule:');
     }
   }
 
@@ -106,7 +124,25 @@ export class Ncc8Service {
         this.CONFESSION_CHANNEL_ID,
       );
     } catch (error) {
-      this.logger.error('Error sending confession message:', error);
+      this.ncc8Log(error, 'Error sending confession message:');
+    }
+  }
+
+  async remindUploadNcc8Audio() {
+    try {
+      const content: ChannelMessageContent = {
+        t: `🔔 Nhắc nhở các bạn NCC8 upload audio cho tuần này nhé!`,
+      };
+
+      const mentions: Array<ApiMessageMention> = [
+        {
+          username: 'here',
+        },
+      ];
+
+      return this.ncc8AudioChannel.send(content, mentions, [], true);
+    } catch (error) {
+      this.ncc8Log(error, 'Error sending audio upload reminder:');
     }
   }
 }

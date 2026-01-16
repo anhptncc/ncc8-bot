@@ -10,7 +10,15 @@ export class TasksService {
   @Cron('0 0 9 * * 1', {
     timeZone: 'Asia/Ho_Chi_Minh',
   })
-  handleWeeklyCron() {
+  sendWorkScheduleCron() {
     this.ncc8Service.sendWorkSchedule();
+  }
+
+  // every Friday 11:00
+  @Cron('0 0 11 * * 5', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+  })
+  remindUploadNcc8AudioCron() {
+    this.ncc8Service.remindUploadNcc8Audio();
   }
 }
