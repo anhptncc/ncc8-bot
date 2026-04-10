@@ -9,13 +9,14 @@ export const dataSourceOption: DataSourceOptions = {
   username: config().POSTGRES_USER,
   password: config().POSTGRES_PASSWORD,
   database: config().POSTGRES_DB,
-  synchronize: false,
+  synchronize: true,
   logging: false,
   entities: ['dist/entities/*.entity.js'],
   migrations: ['dist/migrations/*.js'],
   subscribers: [],
   schema: 'public',
   migrationsRun: true,
+  ssl: true,
 };
 
 export default new DataSource(dataSourceOption);
