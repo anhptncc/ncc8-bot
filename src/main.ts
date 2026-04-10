@@ -17,6 +17,10 @@ async function bootstrap() {
   const bot = app.get(BotGateway);
   bot.initEvent();
 
-  await app.listen(3000, '0.0.0.0');
+  const PORT = process.env.PORT || 8080; // use Railway's injected port
+
+  await app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server listening on 0.0.0.0:${PORT}`);
+  });
 }
 bootstrap();
