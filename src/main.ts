@@ -17,6 +17,8 @@ async function bootstrap() {
   const bot = app.get(BotGateway);
   bot.initEvent();
 
-  await app.listen(process.env.PORT || APP_CONSTANTS.HTTP.PORT);
+  const port = process.env.PORT || 3000;
+
+  await app.listen(port, '0.0.0.0');
 }
 bootstrap();
