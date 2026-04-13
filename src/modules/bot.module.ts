@@ -1,5 +1,6 @@
 import { ConfessionCommand } from '@app/command/confession.command';
 import { HelpCommand } from '@app/command/help.command';
+import { InternalScheduleCommand } from '@app/command/schedule';
 import { PingCommand } from '@app/command/ping.command';
 import { ClientConfigService } from '@app/config/client.config';
 import { BotGateway } from '@app/gateway/bot.gateway';
@@ -37,6 +38,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     HelpCommand,
     PingCommand,
     ConfessionCommand,
+    InternalScheduleCommand,
   ],
   controllers: [],
 })
