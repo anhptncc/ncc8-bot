@@ -21,4 +21,12 @@ export class TasksService {
   remindUploadNcc8AudioCron() {
     this.ncc8Service.remindUploadNcc8Audio();
   }
+
+  // every Thursday 20:00
+  @Cron('0 0 20 * * 4', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+  })
+  remindRecordNcc8AudioCron() {
+    this.ncc8Service.remindRecordNcc8Audio();
+  }
 }

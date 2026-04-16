@@ -145,4 +145,22 @@ export class Ncc8Service {
       this.ncc8Log(error, 'Error sending audio upload reminder:');
     }
   }
+
+  async remindRecordNcc8Audio() {
+    try {
+      const content: ChannelMessageContent = {
+        t: `🔔 Nhắc nhở các bạn NCC8 record audio cho tuần này nhé!`,
+      };
+
+      const mentions: Array<ApiMessageMention> = [
+        {
+          username: 'here',
+        },
+      ];
+
+      return this.ncc8Channel.send(content, mentions, [], true);
+    } catch (error) {
+      this.ncc8Log(error, 'Error sending audio record reminder:');
+    }
+  }
 }
