@@ -202,12 +202,11 @@ export class Ncc8Service {
         .build();
 
       const content: ChannelMessageContent = {
-        t: 'Mời bạn điền form confession bên dưới:',
         embed: [interactive],
         components: [{ components }],
       };
 
-      return channel.send(content);
+      return channel.sendEphemeral(message.sender_id, content, message.id);
     } catch (error) {
       this.ncc8Log(error, 'Error opening confession form:');
     }
@@ -233,10 +232,8 @@ export class Ncc8Service {
       await this.sendConfession(data.text);
 
       const channel = await this.client.channels.fetch(payload.channel_id);
-      const message = await channel.messages.fetch(payload.message_id);
-
-      if (message) {
-        await message.delete();
+      if (channel) {
+        await channel.deleteEphemeral(payload.user_id, payload.message_id);
       }
       const userMessage = await channel.messages.fetch(data.userMsgId);
       if (userMessage) {
@@ -292,10 +289,9 @@ export class Ncc8Service {
       const data = this.extractConfessionText(payload);
 
       const channel = await this.client.channels.fetch(payload.channel_id);
-      const message = await channel.messages.fetch(payload.message_id);
 
-      if (message) {
-        await message.delete();
+      if (channel) {
+        await channel.deleteEphemeral(payload.user_id, payload.message_id);
       }
 
       const userMessage = await channel.messages.fetch(data.userMsgId);
