@@ -178,7 +178,7 @@ export class Ncc8Service {
       const channel = await this.client.channels.fetch(message.channel_id);
       const interactive = new InteractiveBuilder('NCC8 Confession')
         .setDescription(
-          'Hãy nhập confession của bạn rồi nhấn Save để gửi ẩn danh.',
+          'Nơi bạn có thể gửi confession ẩn danh đến NCC8. Hãy chia sẻ những suy nghĩ, tâm sự của bạn nhé! ❤️',
         )
         .addInputField(
           this.CONFESSION_INPUT_ID,
