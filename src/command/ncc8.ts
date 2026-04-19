@@ -36,6 +36,10 @@ export class InternalScheduleCommand extends CommandMessage {
         }
         break;
 
+      case 'request':
+        await this.ncc8Service.openRequestForm(message);
+        break;
+
       case 'help':
         return this.handleHelp(message);
       default:
@@ -52,6 +56,7 @@ export class InternalScheduleCommand extends CommandMessage {
       `**Available Commands:**\n` +
       `*ncc8 confession: Mở form gửi confession đến NCC8 (ẩn danh)\n` +
       `*ncc8 confession [nội dung]: Gửi confession đến NCC8 (ẩn danh)\n` +
+      `*ncc8 request: Mở form gửi yêu cầu bài hát đến NCC8\n` +
       `*ncc8 help: Hiển thị trợ giúp\n` +
       ncc8PrivateCmd;
 

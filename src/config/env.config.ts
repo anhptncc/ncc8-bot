@@ -18,4 +18,6 @@ export default () => ({
   NCC8_CHANNEL_ID: process.env.NCC8_CHANNEL_ID || '',
   GOOGLE_SERVICE_ACCOUNT_JSON: process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '',
   CONFESSION_CHANNEL_ID: process.env.CONFESSION_CHANNEL_ID || '',
+  NEWS_CHANNEL_ID: process.env.NEWS_CHANNEL_ID || '',
+  REQUEST_CHANNEL_ID: process.env.REQUEST_CHANNEL_ID || '',
 });

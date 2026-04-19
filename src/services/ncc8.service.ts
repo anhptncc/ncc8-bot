@@ -27,9 +27,17 @@ export class Ncc8Service {
   private readonly NCC8_CHANNEL_ID = process.env.NCC8_CHANNEL_ID;
   private readonly CONFESSION_CHANNEL_ID = process.env.CONFESSION_CHANNEL_ID;
   private readonly NCC8_AUDIO_CHANNEL_ID = process.env.NCC8_AUDIO_CHANNEL_ID;
+  private readonly REQUEST_CHANNEL_ID = process.env.REQUEST_CHANNEL_ID;
+
+  // Confession form
   private readonly CONFESSION_SAVE_BUTTON_ID = 'ncc8_confession_save_submit';
   private readonly CONFESSION_CANCEL_BUTTON_ID = 'ncc8_confession_cancel';
   private readonly CONFESSION_INPUT_ID = 'ncc8_confession_content_input';
+
+  // Request form
+  private readonly REQUEST_SAVE_BUTTON_ID = 'ncc8_request_save_submit';
+  private readonly REQUEST_CANCEL_BUTTON_ID = 'ncc8_request_cancel';
+  private readonly REQUEST_INPUT_ID = 'ncc8_request_content_input';
 
   constructor(
     private clientService: MezonClientService,
@@ -137,6 +145,33 @@ export class Ncc8Service {
     }
   }
 
+  async sendMusicRequest(requestContent: string) {
+    try {
+      const msg = requestContent.trim();
+      if (!msg) return;
+
+      const messageContent =
+        `🎵 New Song Request:\n${msg}` +
+        '\n------------------THE END-----------------\n';
+
+      const content: ChannelMessageContent = {
+        mk: [{ type: EMarkdownType.PRE, s: 0, e: messageContent.length }],
+        t: messageContent,
+      };
+
+      return this.ncc8Channel.send(
+        content,
+        [],
+        [],
+        false,
+        false,
+        this.REQUEST_CHANNEL_ID,
+      );
+    } catch (error) {
+      this.ncc8Log(error, 'Error sending music request message:');
+    }
+  }
+
   async remindUploadNcc8Audio() {
     try {
       const content: ChannelMessageContent = {
@@ -212,12 +247,57 @@ export class Ncc8Service {
     }
   }
 
+  async openRequestForm(message: ChannelMessage) {
+    try {
+      const channel = await this.client.channels.fetch(message.channel_id);
+      const interactive = new InteractiveBuilder('NCC8 Song Request')
+        .setDescription(
+          'Bạn muốn NCC8 phát bài nào? Hãy điền tên bài hát hoặc link bài nhạc bạn muốn request nhé! 🎧',
+        )
+        .addInputField(
+          this.REQUEST_INPUT_ID,
+          'Tên bài hát hoặc link bài nhạc',
+          'Ví dụ: Thiên Lý Ơi hoặc https://youtu.be/OrDB4jpA1g8',
+          { textarea: true },
+        )
+        .build();
+
+      const components = new ButtonBuilder()
+        .addButton(
+          this.REQUEST_SAVE_BUTTON_ID + '_' + message.id,
+          'Save',
+          EButtonMessageStyle.SUCCESS,
+        )
+        .addButton(
+          this.REQUEST_CANCEL_BUTTON_ID + '_' + message.id,
+          'Cancel',
+          EButtonMessageStyle.DANGER,
+        )
+        .build();
+
+      const content: ChannelMessageContent = {
+        embed: [interactive],
+        components: [{ components }],
+      };
+
+      return channel.sendEphemeral(message.sender_id, content, message.id);
+    } catch (error) {
+      this.ncc8Log(error, 'Error opening request form:');
+    }
+  }
+
   ncc8SubmitFormController(payload: MessageButtonClicked) {
     if (payload.button_id.startsWith(this.CONFESSION_SAVE_BUTTON_ID)) {
       return this.handleConfessionFormSubmit(payload);
     }
     if (payload.button_id.startsWith(this.CONFESSION_CANCEL_BUTTON_ID)) {
       return this.handleConfessionFormCancel(payload);
+    }
+    if (payload.button_id.startsWith(this.REQUEST_SAVE_BUTTON_ID)) {
+      return this.handleRequestFormSubmit(payload);
+    }
+    if (payload.button_id.startsWith(this.REQUEST_CANCEL_BUTTON_ID)) {
+      return this.handleRequestFormCancel(payload);
     }
   }
 
@@ -302,6 +382,52 @@ export class Ncc8Service {
       }
     } catch (error) {
       this.ncc8Log(error, 'Error handling confession form cancel:');
+    }
+  }
+
+  async handleRequestFormSubmit(payload: MessageButtonClicked) {
+    try {
+      const data = this.extractConfessionText(payload);
+
+      if (!data.text) {
+        return;
+      }
+
+      await this.sendMusicRequest(data.text);
+
+      const channel = await this.client.channels.fetch(payload.channel_id);
+      if (channel) {
+        await channel.deleteEphemeral(payload.user_id, payload.message_id);
+      }
+      const userMessage = await channel.messages.fetch(data.userMsgId);
+      if (userMessage) {
+        await userMessage.reply({
+          t: 'Request bài hát của bạn đã được gửi thành công! Cảm ơn bạn ❤️',
+        });
+      }
+    } catch (error) {
+      this.ncc8Log(error, 'Error handling request form submit:');
+    }
+  }
+
+  async handleRequestFormCancel(payload: MessageButtonClicked) {
+    try {
+      const data = this.extractConfessionText(payload);
+
+      const channel = await this.client.channels.fetch(payload.channel_id);
+
+      if (channel) {
+        await channel.deleteEphemeral(payload.user_id, payload.message_id);
+      }
+
+      const userMessage = await channel.messages.fetch(data.userMsgId);
+      if (userMessage) {
+        await userMessage.reply({
+          t: 'Request bài hát của bạn đã được hủy. Bạn có thể gửi request mới bất kỳ lúc nào nhé! 🎧',
+        });
+      }
+    } catch (error) {
+      this.ncc8Log(error, 'Error handling request form cancel:');
     }
   }
 }
