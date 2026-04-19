@@ -2,10 +2,15 @@ import { Injectable, Logger } from '@nestjs/common';
 import { MezonClientService } from './mezon-client.service';
 import {
   ApiMessageMention,
+  ChannelMessage,
   ChannelMessageContent,
+  EButtonMessageStyle,
   EMarkdownType,
+  InteractiveBuilder,
   MezonClient,
+  ButtonBuilder,
 } from 'mezon-sdk';
+import { MessageButtonClicked } from 'mezon-sdk/dist/cjs/rtapi/realtime';
 import { GoogleSheetsService } from './google-sheets.service';
 import { TextChannel } from 'mezon-sdk/dist/cjs/mezon-client/structures/TextChannel';
 import * as dayjs from 'dayjs';
@@ -22,6 +27,9 @@ export class Ncc8Service {
   private readonly NCC8_CHANNEL_ID = process.env.NCC8_CHANNEL_ID;
   private readonly CONFESSION_CHANNEL_ID = process.env.CONFESSION_CHANNEL_ID;
   private readonly NCC8_AUDIO_CHANNEL_ID = process.env.NCC8_AUDIO_CHANNEL_ID;
+  private readonly CONFESSION_SAVE_BUTTON_ID = 'ncc8_confession_save_submit';
+  private readonly CONFESSION_CANCEL_BUTTON_ID = 'ncc8_confession_cancel';
+  private readonly CONFESSION_INPUT_ID = 'ncc8_confession_content_input';
 
   constructor(
     private clientService: MezonClientService,
@@ -102,9 +110,10 @@ export class Ncc8Service {
     }
   }
 
-  async sendConfession(args: string[]) {
+  async sendConfession(confessionContent: string) {
     try {
-      const msg = args.join(' ');
+      const msg = confessionContent.trim();
+      if (!msg) return;
 
       const messageContent =
         `💌 New Confession:\n${msg}` +
@@ -161,6 +170,142 @@ export class Ncc8Service {
       return this.ncc8Channel.send(content, mentions, [], true);
     } catch (error) {
       this.ncc8Log(error, 'Error sending audio record reminder:');
+    }
+  }
+
+  async openConfessionForm(message: ChannelMessage) {
+    try {
+      const channel = await this.client.channels.fetch(message.channel_id);
+      const interactive = new InteractiveBuilder('NCC8 Confession')
+        .setDescription(
+          'Hãy nhập confession của bạn rồi nhấn Save để gửi ẩn danh.',
+        )
+        .addInputField(
+          this.CONFESSION_INPUT_ID,
+          'Nội dung confession',
+          'Nhập confession của bạn tại đây...',
+          { textarea: true },
+        )
+        .build();
+
+      const components = new ButtonBuilder()
+        .addButton(
+          this.CONFESSION_SAVE_BUTTON_ID + '_' + message.id,
+          'Save',
+          EButtonMessageStyle.SUCCESS,
+        )
+        .addButton(
+          this.CONFESSION_CANCEL_BUTTON_ID + '_' + message.id,
+          'Cancel',
+          EButtonMessageStyle.DANGER,
+        )
+        .build();
+
+      const content: ChannelMessageContent = {
+        t: 'Mời bạn điền form confession bên dưới:',
+        embed: [interactive],
+        components: [{ components }],
+      };
+
+      return channel.send(content);
+    } catch (error) {
+      this.ncc8Log(error, 'Error opening confession form:');
+    }
+  }
+
+  ncc8SubmitFormController(payload: MessageButtonClicked) {
+    if (payload.button_id.startsWith(this.CONFESSION_SAVE_BUTTON_ID)) {
+      return this.handleConfessionFormSubmit(payload);
+    }
+    if (payload.button_id.startsWith(this.CONFESSION_CANCEL_BUTTON_ID)) {
+      return this.handleConfessionFormCancel(payload);
+    }
+  }
+
+  async handleConfessionFormSubmit(payload: MessageButtonClicked) {
+    try {
+      const data = this.extractConfessionText(payload);
+
+      if (!data.text) {
+        return;
+      }
+
+      await this.sendConfession(data.text);
+
+      const channel = await this.client.channels.fetch(payload.channel_id);
+      const message = await channel.messages.fetch(payload.message_id);
+
+      if (message) {
+        await message.delete();
+      }
+      const userMessage = await channel.messages.fetch(data.userMsgId);
+      if (userMessage) {
+        await userMessage.reply({
+          t: 'Confession của bạn đã được gửi thành công! Cảm ơn bạn đã chia sẻ ❤️',
+        });
+      }
+    } catch (error) {
+      this.ncc8Log(error, 'Error handling confession form submit:');
+    }
+  }
+
+  private extractConfessionText(payload: MessageButtonClicked): {
+    text: string;
+    userMsgId: string;
+  } {
+    const extraData = payload.extra_data;
+    const msgId = payload.button_id.split('_').pop();
+
+    if (!extraData) return { text: '', userMsgId: msgId };
+
+    try {
+      const parsed = JSON.parse(extraData);
+      if (typeof parsed === 'string')
+        return { text: parsed.trim(), userMsgId: msgId };
+
+      if (parsed && typeof parsed === 'object') {
+        if (typeof parsed[this.CONFESSION_INPUT_ID] === 'string') {
+          return {
+            text: parsed[this.CONFESSION_INPUT_ID].trim(),
+            userMsgId: msgId,
+          };
+        }
+
+        for (const value of Object.values(parsed)) {
+          if (typeof value === 'string' && value.trim()) {
+            return {
+              text: value.trim(),
+              userMsgId: msgId,
+            };
+          }
+        }
+      }
+    } catch {
+      return { text: extraData.trim(), userMsgId: msgId };
+    }
+
+    return { text: '', userMsgId: msgId };
+  }
+
+  async handleConfessionFormCancel(payload: MessageButtonClicked) {
+    try {
+      const data = this.extractConfessionText(payload);
+
+      const channel = await this.client.channels.fetch(payload.channel_id);
+      const message = await channel.messages.fetch(payload.message_id);
+
+      if (message) {
+        await message.delete();
+      }
+
+      const userMessage = await channel.messages.fetch(data.userMsgId);
+      if (userMessage) {
+        await userMessage.reply({
+          t: 'Confession của bạn đã được hủy. Nếu muốn chia sẻ lại, bạn có thể gửi confession mới nhé! ❤️',
+        });
+      }
+    } catch (error) {
+      this.ncc8Log(error, 'Error handling confession form cancel:');
     }
   }
 }

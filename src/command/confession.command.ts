@@ -10,8 +10,13 @@ export class ConfessionCommand extends CommandMessage {
   }
 
   async execute(args: string[], message: ChannelMessage) {
+    if (!args.length) {
+      await this.ncc8Service.openConfessionForm(message);
+      return;
+    }
+
     const messageContent = `Gửi confession thành công! Cảm ơn bạn đã chia sẻ ❤️`;
-    await this.ncc8Service.sendConfession(args);
+    await this.ncc8Service.sendConfession(args.join(' '));
     return this.replyMessageGenerate({ messageContent }, message);
   }
 }

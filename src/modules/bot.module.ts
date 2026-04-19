@@ -4,7 +4,10 @@ import { InternalScheduleCommand } from '@app/command/schedule';
 import { PingCommand } from '@app/command/ping.command';
 import { ClientConfigService } from '@app/config/client.config';
 import { BotGateway } from '@app/gateway/bot.gateway';
-import { EventListenerChannelMessage } from '@app/listeners';
+import {
+  EventListenerChannelMessage,
+  EventListenerMessageButtonClicked,
+} from '@app/listeners';
 import { CommandService } from '@app/services/command.service';
 import { GoogleSheetsService } from '@app/services/google-sheets.service';
 import { MessageCommand } from '@app/services/message-command.service';
@@ -33,6 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 
     // Listeners
     EventListenerChannelMessage,
+    EventListenerMessageButtonClicked,
 
     // Commands
     HelpCommand,
