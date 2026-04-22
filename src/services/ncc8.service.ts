@@ -15,6 +15,7 @@ import { GoogleSheetsService } from './google-sheets.service';
 import { TextChannel } from 'mezon-sdk/dist/cjs/mezon-client/structures/TextChannel';
 import * as dayjs from 'dayjs';
 import * as customParseFormat from 'dayjs/plugin/customParseFormat.js';
+import { getRandomRequestSuccessReply } from '@app/constants/ncc8-request-replies';
 
 dayjs.extend(customParseFormat);
 
@@ -402,7 +403,7 @@ export class Ncc8Service {
       const userMessage = await channel.messages.fetch(data.userMsgId);
       if (userMessage) {
         await userMessage.reply({
-          t: 'Request bài hát của bạn đã được gửi thành công! Cảm ơn bạn ❤️',
+          t: getRandomRequestSuccessReply(),
         });
       }
     } catch (error) {
