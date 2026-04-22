@@ -13,7 +13,6 @@ export class InternalScheduleCommand extends CommandMessage {
 
   async execute(args: string[], message: ChannelMessage) {
     const command = args[0];
-    const content = args.slice(1).join(' ').trim();
 
     switch (command) {
       case 'schedule':
@@ -23,17 +22,7 @@ export class InternalScheduleCommand extends CommandMessage {
         break;
 
       case 'confession':
-        if (content) {
-          await this.ncc8Service.sendConfession(content);
-          return this.replyMessageGenerate(
-            {
-              messageContent: `Gửi confession thành công! Cảm ơn bạn đã chia sẻ ❤️`,
-            },
-            message,
-          );
-        } else {
-          await this.ncc8Service.openConfessionForm(message);
-        }
+        await this.ncc8Service.openConfessionForm(message);
         break;
 
       case 'request':
@@ -55,7 +44,6 @@ export class InternalScheduleCommand extends CommandMessage {
     const messageContent =
       `**Available Commands:**\n` +
       `*ncc8 confession: Mở form gửi confession đến NCC8 (ẩn danh)\n` +
-      `*ncc8 confession [nội dung]: Gửi confession đến NCC8 (ẩn danh)\n` +
       `*ncc8 request: Mở form gửi yêu cầu bài hát đến NCC8\n` +
       `*ncc8 help: Hiển thị trợ giúp\n` +
       ncc8PrivateCmd;
