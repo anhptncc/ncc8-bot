@@ -38,7 +38,8 @@ export class Ncc8Service {
   // Request form
   private readonly REQUEST_SAVE_BUTTON_ID = 'ncc8_request_save_submit';
   private readonly REQUEST_CANCEL_BUTTON_ID = 'ncc8_request_cancel';
-  private readonly REQUEST_INPUT_ID = 'ncc8_request_content_input';
+  private readonly REQUEST_NAME_INPUT_ID = 'ncc8_request_song_name_input';
+  private readonly REQUEST_LINK_INPUT_ID = 'ncc8_request_song_link_input';
 
   constructor(
     private clientService: MezonClientService,
@@ -253,13 +254,19 @@ export class Ncc8Service {
       const channel = await this.client.channels.fetch(message.channel_id);
       const interactive = new InteractiveBuilder('NCC8 Song Request')
         .setDescription(
-          'Bạn muốn NCC8 phát bài nào? Hãy điền tên bài hát hoặc link bài nhạc bạn muốn request nhé! 🎧',
+          'Bạn muốn NCC8 phát bài nào? Hãy điền tên bài hát và/hoặc link bài nhạc bạn muốn request nhé! 🎧',
         )
         .addInputField(
-          this.REQUEST_INPUT_ID,
-          'Tên bài hát hoặc link bài nhạc',
-          'Ví dụ: Thiên Lý Ơi hoặc https://youtu.be/OrDB4jpA1g8',
-          { textarea: true },
+          this.REQUEST_NAME_INPUT_ID,
+          'Tên bài hát',
+          'Ví dụ: Thiên Lý Ơi',
+          { textarea: false },
+        )
+        .addInputField(
+          this.REQUEST_LINK_INPUT_ID,
+          'Link bài hát',
+          'Ví dụ: https://youtu.be/OrDB4jpA1g8',
+          { textarea: false },
         )
         .build();
 
@@ -386,15 +393,54 @@ export class Ncc8Service {
     }
   }
 
+  private extractRequestData(payload: MessageButtonClicked): {
+    songName: string;
+    songLink: string;
+    userMsgId: string;
+  } {
+    const extraData = payload.extra_data;
+    const msgId = payload.button_id.split('_').pop();
+
+    if (!extraData) return { songName: '', songLink: '', userMsgId: msgId };
+
+    try {
+      const parsed = JSON.parse(extraData);
+      if (parsed && typeof parsed === 'object') {
+        return {
+          songName:
+            typeof parsed[this.REQUEST_NAME_INPUT_ID] === 'string'
+              ? parsed[this.REQUEST_NAME_INPUT_ID].trim()
+              : '',
+          songLink:
+            typeof parsed[this.REQUEST_LINK_INPUT_ID] === 'string'
+              ? parsed[this.REQUEST_LINK_INPUT_ID].trim()
+              : '',
+          userMsgId: msgId,
+        };
+      }
+    } catch {
+      return { songName: extraData.trim(), songLink: '', userMsgId: msgId };
+    }
+
+    return { songName: '', songLink: '', userMsgId: msgId };
+  }
+
   async handleRequestFormSubmit(payload: MessageButtonClicked) {
     try {
-      const data = this.extractConfessionText(payload);
+      const data = this.extractRequestData(payload);
 
-      if (!data.text) {
+      if (!data.songName || !data.songLink) {
         return;
       }
 
-      await this.sendMusicRequest(data.text);
+      const requestContent = [
+        data.songName ? `Tên bài: ${data.songName}` : '',
+        data.songLink ? `Link: ${data.songLink}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+      await this.sendMusicRequest(requestContent);
 
       const channel = await this.client.channels.fetch(payload.channel_id);
       if (channel) {
@@ -413,7 +459,7 @@ export class Ncc8Service {
 
   async handleRequestFormCancel(payload: MessageButtonClicked) {
     try {
-      const data = this.extractConfessionText(payload);
+      const userMsgId = payload.button_id.split('_').pop();
 
       const channel = await this.client.channels.fetch(payload.channel_id);
 
@@ -421,7 +467,7 @@ export class Ncc8Service {
         await channel.deleteEphemeral(payload.user_id, payload.message_id);
       }
 
-      const userMessage = await channel.messages.fetch(data.userMsgId);
+      const userMessage = await channel.messages.fetch(userMsgId);
       if (userMessage) {
         await userMessage.reply({
           t: 'Request bài hát của bạn đã được hủy. Bạn có thể gửi request mới bất kỳ lúc nào nhé! 🎧',
